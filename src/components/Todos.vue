@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <ul class="todos" v-if="todos.length">
+    <ul class="todos" v-if="!isLoading && todos.length">
       <transition-group name="todo-list">
         <li v-for="(todo, index) in todos" :key="todo.id">
           <input type="checkbox" :id="'item-' + index" v-model="todo.isCompleted">
@@ -21,14 +21,18 @@
         </li>
       </transition-group>
     </ul>
-    <div v-else class="no-items-info">
+    <div v-else-if="!isLoading" class="no-items-info">
       <span class="text">Сейчас у Вас нет задач</span>
+    </div>
+    <div class="loader-block" v-else>
+      <loader/>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Loader from './Loader.vue';
 
 export default {
   mounted () {
@@ -70,6 +74,9 @@ export default {
     ...mapState({
       todos: state => state.todos,
     }),
+  },
+  components: {
+    Loader,
   }
 }
 </script>
@@ -87,6 +94,10 @@ export default {
     padding: 36px;
     margin: 0;
     border-radius: 3px;
+    background: rgba(243, 229, 255, 0.31);
+  }
+  .loader-block {
+    padding: 36px;
     background: rgba(243, 229, 255, 0.31);
   }
   .no-items-info {
