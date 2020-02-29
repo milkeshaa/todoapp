@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <ul class="todos">
+    <ul class="todos" v-if="todos.length">
       <transition-group name="todo-list">
         <li v-for="(todo, index) in todos" :key="todo.id">
           <input type="checkbox" :id="'item-' + index" v-model="todo.isCompleted">
@@ -21,6 +21,9 @@
         </li>
       </transition-group>
     </ul>
+    <div v-else class="no-items-info">
+      <span class="text">Сейчас у Вас нет задач</span>
+    </div>
   </div>
 </template>
 
@@ -42,6 +45,10 @@ export default {
       fetch("https://todos-91933.firebaseio.com/todos.json")
       .then(response => response.json())
       .then(data => {
+        if (!data) {
+          this.isLoading = false;
+          return;
+        }
         let ids = Object.keys(data);
         ids.forEach(id => data[id].id = id);
         let todos = Object.values(data);
@@ -75,12 +82,16 @@ export default {
     border-radius: 3px;
   }
 
-  .todos {
+  .todos, .no-items-info {
     list-style: none;
     padding: 36px;
     margin: 0;
     border-radius: 3px;
     background: rgba(243, 229, 255, 0.31);
+  }
+  .no-items-info {
+    text-align: center;
+    font-size: 18px;
   }
   .todos li {
     position: relative;
