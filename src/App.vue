@@ -59,6 +59,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 90px;
+    transition: all .4s;
   }
   .links, .link {
     padding: 20px;
@@ -87,7 +88,7 @@ export default {
     .menu__button {
       display: flex;
       align-items: center;
-      position: fixed;
+      position: absolute;
       top: 30px;
       right: 30px;
       width: 26px;
@@ -128,7 +129,6 @@ export default {
     }
     .header_with-opened-links {
       flex-direction: column;
-      transition: all .4s;
       height: 235px;
     }
     .links_opened {
